@@ -1,0 +1,7 @@
+::ng-deep .month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+::ng-deep .month-picker .mat-calendar-arrow {
+  display: none;
+}

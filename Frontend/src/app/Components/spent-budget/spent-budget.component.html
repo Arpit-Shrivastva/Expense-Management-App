@@ -1,0 +1,84 @@
+<div class="p-6 space-y-6">
+  <h2 class="text-2xl font-bold text-indigo-700 flex items-center gap-2">
+    <mat-icon class="text-indigo-500">bar_chart</mat-icon>
+    Budget vs Spending
+  </h2>
+
+  <!-- Month Picker -->
+  <mat-form-field appearance="fill" class="w-64">
+    <mat-label>Select Month</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [value]="selectedMonth.value"
+      readonly
+      (click)="picker.open()"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker
+      #picker
+      startView="multi-year"
+      (monthSelected)="onMonthSelected($event, picker)"
+      panelClass="month-picker"
+    ></mat-datepicker>
+  </mat-form-field>
+
+  <!-- List Table View -->
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="min-w-full table-auto text-sm">
+      <thead class="bg-indigo-100 text-indigo-700 uppercase tracking-wide text-left">
+        <tr>
+          <th class="px-4 py-3">Category</th>
+          <th class="px-4 py-3">Budgeted</th>
+          <th class="px-4 py-3">Spent</th>
+          <th class="px-4 py-3">Remaining</th>
+          <th class="px-4 py-3">Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of paginatedResults"
+          class="border-t hover:bg-gray-50 transition"
+        >
+          <td class="px-4 py-3 font-medium text-gray-800">
+            {{ item.category }}
+          </td>
+          <td class="px-4 py-3">₹{{ item.budgetedAmount }}</td>
+          <td class="px-4 py-3 text-red-600 font-medium">₹{{ item.spentAmount }}</td>
+          <td
+            class="px-4 py-3 font-semibold"
+            [ngClass]="{
+              'text-green-600': item.remainingAmount > 0,
+              'text-yellow-600': item.remainingAmount === 0,
+              'text-red-600': item.remainingAmount < 0
+            }"
+          >
+            ₹{{ item.remainingAmount }}
+          </td>
+          <td class="px-4 py-3 w-64">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="getProgress(item)"
+              [color]="getProgressColor(item)"
+              class="h-2 rounded"
+            ></mat-progress-bar>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- No Data -->
+    <div *ngIf="paginatedResults.length === 0" class="p-6 text-center text-gray-500">
+      <mat-icon class="text-4xl mb-2 text-gray-400">info</mat-icon>
+      No comparison data found for this month.
+    </div>
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 15]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

@@ -1,0 +1,74 @@
+<mat-sidenav-container class="h-screen mt-[64px]">
+  <!-- Sidebar -->
+  <mat-sidenav
+    #drawer
+    [mode]="isSmallScreen ? 'over' : 'side'"
+    [opened]="!isSmallScreen"
+    class="w-64 bg-gray-50 shadow-lg flex flex-col"
+  >
+    <!-- App Logo + Title -->
+    <div class="p-4 border-b flex items-center space-x-3">
+      <img src="../../../assets/Icon.png" alt="Logo" class="w-10 h-10 rounded-full shadow" />
+      <div>
+        <div class="text-indigo-700 font-bold text-xl">Expense App</div>
+        <div class="text-xs text-gray-500">Track | Save | Manage</div>
+      </div>
+    </div>
+
+    <!-- Navigation List -->
+    <mat-nav-list class="flex-1">
+      <a mat-list-item routerLink="/layout/dashboard" routerLinkActive="active-link">
+        <mat-icon class="mr-2">dashboard</mat-icon>
+        Dashboard
+      </a>
+
+      <!-- Only show for admin -->
+      <a *ngIf="role === 'ROLE_ADMIN'" mat-list-item routerLink="/layout/users" routerLinkActive="active-link">
+        <mat-icon class="mr-2">group</mat-icon>
+        Users
+      </a>
+
+      <a mat-list-item routerLink="/layout/transactions" routerLinkActive="active-link">
+        <mat-icon class="mr-2">receipt_long</mat-icon>
+        Transactions
+      </a>
+
+      <a mat-list-item routerLink="/layout/budget" routerLinkActive="active-link">
+        <mat-icon class="mr-2">account_balance_wallet</mat-icon>
+        Budget
+      </a>
+
+      <a mat-list-item routerLink="/layout/spended-budget" routerLinkActive="active-link">
+        <mat-icon class="mr-2">trending_up</mat-icon>
+        Budget Spent
+      </a>
+
+      <a mat-list-item routerLink="/layout/income" routerLinkActive="active-link">
+        <mat-icon class="mr-2">attach_money</mat-icon>
+        Income
+      </a>
+
+      <a mat-list-item routerLink="/layout/settings" routerLinkActive="active-link">
+        <mat-icon class="mr-2">settings</mat-icon>
+        Settings
+      </a>
+    </mat-nav-list>
+
+    <!-- Logout -->
+    <div class="p-4 border-t">
+      <button mat-button (click)="logout()" class="text-red-600 hover:bg-red-100 w-full text-left">
+        <mat-icon class="mr-2">logout</mat-icon>
+        Logout
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="p-4 bg-gray-50">
+    <button *ngIf="isSmallScreen" mat-icon-button (click)="drawer.toggle()" class="mb-4">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

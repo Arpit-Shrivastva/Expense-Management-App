@@ -1,0 +1,86 @@
+<div class="p-6 bg-white min-h-screen rounded-xl shadow-md">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <h2 class="text-3xl font-extrabold text-indigo-800 tracking-tight">💰 My Expenses</h2>
+    <button mat-raised-button color="primary" (click)="openAddExpenseDialog()" class="flex items-center gap-2">
+      <mat-icon>add</mat-icon>
+      <span>Add Expense</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="filterByDateRange()" />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="filterByDateRange()" />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="selectedCategory" (selectionChange)="filterByCategory()">
+        <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto bg-gray-50 rounded-xl shadow border border-gray-200">
+    <table class="min-w-full text-sm divide-y divide-gray-200">
+      <thead class="bg-indigo-100 text-indigo-700 text-xs font-semibold uppercase">
+        <tr>
+          <th class="text-left px-4 py-3">Date</th>
+          <th class="text-left px-4 py-3">Category</th>
+          <th class="text-left px-4 py-3">Amount</th>
+          <th class="text-left px-4 py-3">Description</th>
+          <th class="text-left px-4 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of paginatedExpenses"
+            class="hover:bg-indigo-50 transition duration-200 ease-in-out border-t border-gray-100">
+          <td class="px-4 py-3">{{ expense.date | date: 'mediumDate' }}</td>
+          <td class="px-4 py-3">{{ expense.category }}</td>
+          <td class="px-4 py-3 font-medium text-rose-600">₹{{ expense.amount }}</td>
+          <td class="px-4 py-3">{{ expense.description }}</td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-2">
+              <button mat-icon-button color="primary" (click)="openEditExpenseDialog(expense)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteExpense(expense.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedExpenses.length === 0">
+          <td colspan="5" class="text-center text-gray-500 py-6">No expenses found for selected filters.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
+    <button mat-stroked-button color="primary" (click)="prevPage()" [disabled]="currentPage === 0">
+      ← Previous
+    </button>
+    <span class="text-sm text-gray-600">
+      Page <strong>{{ currentPage + 1 }}</strong> of
+      <strong>{{ Math.ceil(expenses.length / pageSize) }}</strong>
+    </span>
+    <button mat-stroked-button color="primary" (click)="nextPage()"
+            [disabled]="(currentPage + 1) * pageSize >= expenses.length">
+      Next →
+    </button>
+  </div>
+</div>

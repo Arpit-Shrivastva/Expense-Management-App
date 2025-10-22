@@ -1,0 +1,45 @@
+<header class="fixed top-0 left-0 w-full bg-blue-600 text-white p-4 shadow-md z-50">
+  <div class="flex justify-between items-center">
+    <!-- Left -->
+    <div class="flex items-center space-x-2">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-6h13v6M3 13l9-9 9 9"></path>
+      </svg>
+      <span class="text-xl font-semibold">Expense Management</span>
+    </div>
+
+    <!-- Toggle for mobile -->
+    <button (click)="toggleMenu()" class="md:hidden focus:outline-none">
+      <svg *ngIf="!isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+      <svg *ngIf="isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center space-x-4">
+      <ng-container *ngIf="!isLoggedIn; else loggedInDesktop">
+        <button (click)="login()" class="bg-white text-blue-600 px-4 py-1 rounded hover:bg-blue-100 transition">Login</button>
+        <button (click)="signUp()" class="bg-white text-blue-600 px-4 py-1 rounded hover:bg-blue-100 transition">Sign Up</button>
+      </ng-container>
+      <ng-template #loggedInDesktop>
+        <span class="font-medium">Welcome, {{ userName }}</span>
+        <!-- <button (click)="logout()" class="text-white hover:underline">Logout</button> -->
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div *ngIf="isMenuOpen" class="md:hidden mt-4 space-y-2">
+    <ng-container *ngIf="!isLoggedIn; else loggedInMobile">
+      <button (click)="login()" class="block w-full text-left bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100 transition">Login</button>
+      <button (click)="signUp()" class="block w-full text-left bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100 transition">Sign Up</button>
+    </ng-container>
+    <ng-template #loggedInMobile>
+      <div class="px-4 font-medium">Welcome, {{ userName }}</div>
+      <!-- <button (click)="logout()" class="block w-full text-left text-white px-4 py-2 hover:underline">Logout</button> -->
+    </ng-template>
+  </div>
+</header>

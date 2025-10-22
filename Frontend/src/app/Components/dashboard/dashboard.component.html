@@ -1,0 +1,111 @@
+<div class="p-6">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT SECTION -->
+    <div class="lg:col-span-8 space-y-6">
+
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <mat-card class="flex flex-col p-5 bg-gradient-to-r from-green-100 to-green-50 rounded-xl shadow-md">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            <mat-icon class="text-green-600">trending_up</mat-icon>
+            Total Income (This Month)
+          </div>
+          <div class="text-3xl font-bold text-green-700 mt-2">₹{{ totalIncome }}</div>
+        </mat-card>
+
+        <mat-card class="flex flex-col p-5 bg-gradient-to-r from-red-100 to-red-50 rounded-xl shadow-md">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            <mat-icon class="text-red-600">money_off</mat-icon>
+            Total Expenses (This Month)
+          </div>
+          <div class="text-3xl font-bold text-red-700 mt-2">₹{{ totalSpent }}</div>
+        </mat-card>
+
+        <mat-card class="flex flex-col p-5 bg-gradient-to-r from-blue-100 to-blue-50 rounded-xl shadow-md">
+          <div class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            <mat-icon class="text-blue-600">account_balance_wallet</mat-icon>
+            Balance (This Month)
+          </div>
+          <div class="text-3xl font-bold text-blue-700 mt-2">₹{{ remaining }}</div>
+        </mat-card>
+      </div>
+
+      <!-- Spending Chart -->
+      <mat-card class="p-6 bg-white rounded-xl shadow-md">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <mat-icon color="primary">show_chart</mat-icon>
+          Spending Report
+        </h3>
+        <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType" height="120">
+        </canvas>
+      </mat-card>
+
+      <!-- Latest Expenses Table -->
+      <mat-card class="p-6 bg-white rounded-xl shadow-md">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <mat-icon color="accent">receipt_long</mat-icon>
+          Recent Transactions
+        </h3>
+
+        <div *ngIf="latestExpenses.length === 0" class="text-gray-500 text-sm">
+          No recent expenses found.
+        </div>
+
+        <div *ngIf="latestExpenses.length > 0" class="overflow-x-auto">
+          <table class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-gray-100 text-xs uppercase tracking-wider">
+              <tr>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Date</th>
+                <th class="py-3 px-4">Amount</th>
+                <th class="py-3 px-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let expense of latestExpenses" class="border-b hover:bg-gray-50">
+                <td class="py-2 px-4">{{ expense.category }}</td>
+                <td class="py-2 px-4">{{ expense.date | date: 'mediumDate' }}</td>
+                <td class="py-2 px-4 text-red-600 font-semibold">₹{{ expense.amount }}</td>
+                <td class="py-2 px-4">{{ expense.description || '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
+
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="lg:col-span-4 space-y-6">
+      <mat-card class="p-6 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 ease-in-out">
+        <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+          <mat-icon class="text-indigo-600">pie_chart</mat-icon>
+          Expenses by Category
+        </h3>
+
+        <div *ngIf="categorySummary.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div *ngFor="let c of categorySummary"
+            class="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 hover:bg-gray-50 transition duration-200">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                <mat-icon class="text-indigo-600">category</mat-icon>
+              </div>
+              <div class="text-sm font-medium text-gray-700">
+                {{ c.category }}
+              </div>
+            </div>
+            <div class="text-indigo-700 font-semibold text-sm bg-indigo-50 px-3 py-1 rounded-full shadow-sm">
+              ₹{{ c.amount }}
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="categorySummary.length === 0" class="text-gray-500 text-sm text-center mt-4">
+          No category data available.
+        </div>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="max-w-2xl mx-auto bg-white mt-12 p-8 rounded-3xl shadow-xl border border-gray-100">
+  <!-- Header -->
+  <div class="flex items-center gap-3 mb-8">
+    <mat-icon class="text-green-600 text-4xl">attach_money</mat-icon>
+    <h2 class="text-3xl font-bold text-gray-800">Add Income</h2>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Amount -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Amount (₹)</mat-label>
+      <input matInput type="number" formControlName="amount" placeholder="Enter amount" />
+      <mat-icon matSuffix>currency_rupee</mat-icon>
+    </mat-form-field>
+
+    <!-- Month -->
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Select Month</mat-label>
+      <input matInput type="month" formControlName="month" />
+      <mat-icon matSuffix>calendar_today</mat-icon>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="col-span-1 md:col-span-2">
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="!incomeForm.valid"
+        class="w-full py-3 text-lg font-semibold tracking-wide rounded-xl shadow hover:shadow-md transition duration-300 ease-in-out"
+      >
+        <mat-icon class="mr-2">add_circle</mat-icon>
+        Add Income
+      </button>
+    </div>
+  </form>
+
+  <!-- Total Income Box -->
+  <div
+    *ngIf="totalIncome !== null"
+    class="mt-10 p-5 rounded-xl bg-green-50 border border-green-200 flex items-center gap-3 shadow-sm"
+  >
+    <mat-icon class="text-green-600">check_circle</mat-icon>
+    <p class="text-green-800 font-medium text-lg">
+      Total Income for Selected Month: <span class="ml-1 font-bold">₹{{ totalIncome }}</span>
+    </p>
+  </div>
+</div>

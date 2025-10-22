@@ -1,0 +1,47 @@
+<div class="flex flex-col md:flex-row h-screen w-full bg-gradient-to-br from-indigo-100 to-blue-100">
+  <!-- Left: Image / Illustration -->
+  <div class="hidden md:flex md:w-1/2 items-center justify-center p-8">
+    <img src="./../../../assets/Secure login-amico.svg" alt="Login Illustration"
+      class="w-4/5 max-w-md animate-slide-in drop-shadow-md" />
+  </div>
+
+  <!-- Right: Login Form -->
+  <div class="w-full md:w-1/2 flex items-center justify-center p-6">
+    <div class="w-full max-w-md bg-white p-10 rounded-2xl shadow-2xl animate-fade-in">
+      <h2 class="text-4xl font-extrabold mb-2 text-center text-indigo-700">Welcome Back</h2>
+      <p class="text-gray-500 text-center mb-6">Login to your account to continue</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-6">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" required autocomplete="username" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" required autocomplete="current-password" />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary"
+          class="w-full py-3 font-bold text-lg tracking-wide transition-transform duration-300 hover:scale-[1.02] shadow-md"
+          [disabled]="loginForm.invalid">
+          Login
+        </button>
+      </form>
+
+      <p class="text-red-600 mt-4 text-center" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <div class="text-center mt-4">
+        <button (click)="openForgotPasswordDialog()" class="text-sm text-blue-700 hover:underline">
+          Forgot Password?
+        </button>
+      </div>
+
+
+      <div class="mt-6 text-center text-sm text-gray-600">
+        Don't have an account?
+        <a routerLink="/register" class="text-indigo-600 font-medium hover:underline">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</div>
